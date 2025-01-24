@@ -1,4 +1,5 @@
 //import
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 
@@ -10,7 +11,7 @@ app.use(express.json());
 
 //connect 2 db
 mongoose
-  .connect("mongodb://localhost/review")
+  .connect(process.env.MONGODB_URL + "/review")
   .then(() => {
     console.log("mongodb connected");
   })
