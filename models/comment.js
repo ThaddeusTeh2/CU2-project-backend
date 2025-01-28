@@ -1,10 +1,10 @@
 const { Schema, model } = require("mongoose");
 
 const commentSchema = new Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  car: { type: mongoose.Schema.Types.ObjectId, ref: "Car", required: true },
+  user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  car: { type: Schema.Types.ObjectId, ref: "Car", required: true },
   content: { type: String, required: true },
-  likes: { type: mongoose.Schema.Types.ObjectId, ref: "Like" },
+  likes: { type: Schema.Types.ObjectId, ref: "Like" },
 });
 
 const Comment = model("Comment", commentSchema);

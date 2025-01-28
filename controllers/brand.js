@@ -4,10 +4,10 @@ const Brand = require("../models/brand");
 
 //get all
 const getBrands = async (sortType) => {
-  const categories = await Brand.find().sort({
+  const brands = await Brand.find().sort({
     [sortType]: 1,
   });
-  return categories;
+  return brands;
 };
 
 //get 1

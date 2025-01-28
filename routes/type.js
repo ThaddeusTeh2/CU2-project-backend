@@ -14,7 +14,8 @@ const {
 // get all types
 router.get("/", async (req, res) => {
   try {
-    const type = await getTypes();
+    const { sortType } = req.body;
+    const type = await getTypes(sortType);
     res.status(200).json(type);
   } catch (err) {
     res.status(400).send({ error: "error fetching type: " + err.message });

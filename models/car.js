@@ -12,10 +12,12 @@ const carSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Brand",
     },
-    like: {
-      type: Schema.Types.ObjectId,
-      ref: "Like",
-    },
+    like: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Like",
+      },
+    ],
     image: String,
   },
   {

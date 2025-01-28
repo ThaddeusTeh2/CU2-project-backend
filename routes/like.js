@@ -42,3 +42,5 @@ router.delete("/:likeId", isValidUser, async (req, res) => {
     });
   }
 });
+
+module.exports = router;

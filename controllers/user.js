@@ -4,6 +4,14 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
 
+//get all users
+const getUsers = async (sortType) => {
+  const users = await User.find().sort({
+    [sortType]: 1,
+  });
+  return users;
+};
+
 // get user by email
 async function getUserByEmail(email) {
   return await User.findOne({ email });
@@ -96,8 +104,25 @@ const signup = async (name, email, password) => {
   };
 };
 
+const editUser = async (_id, name) => {
+  const updatedUser = await User.findOneAndUpdate(
+    { _id },
+    { name },
+    { new: true }
+  );
+  return updatedUser;
+};
+
+//delete user
+const deleteUser = async (id) => {
+  return await User.findByIdAndDelete(id);
+};
+
 module.exports = {
   login,
   signup,
+  getUsers,
   getUserByEmail,
+  editUser,
+  deleteUser,
 };

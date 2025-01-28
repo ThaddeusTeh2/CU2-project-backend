@@ -14,7 +14,8 @@ const {
 // get all brands
 router.get("/", async (req, res) => {
   try {
-    const brand = await getBrands();
+    const { sortType } = req.body;
+    const brand = await getBrands(sortType);
     res.status(200).json(brand);
   } catch (err) {
     res.status(400).send({ error: "err fetching brand: " + err.message });

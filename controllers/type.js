@@ -4,10 +4,10 @@ const Type = require("../models/type");
 // (findbyID supremacy :D )
 
 const getTypes = async (sortType) => {
-  const categories = await Type.find().sort({
+  const types = await Type.find().sort({
     [sortType]: 1,
   });
-  return categories;
+  return types;
 };
 
 const getType = async (_id) => {

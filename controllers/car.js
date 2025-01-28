@@ -1,4 +1,4 @@
-const Car = require("../models/user");
+const Car = require("../models/car");
 const { getLikes } = require("./like");
 
 //get all
@@ -42,7 +42,7 @@ const getCar = async (id) => {
 
 //add new car
 const addNewCar = async (name, description, type, brand, like, image) => {
-  const newCar = new Car({
+  const newCar = await Car.create({
     name,
     description,
     type,
@@ -51,7 +51,6 @@ const addNewCar = async (name, description, type, brand, like, image) => {
     image,
   });
   // save the new car into mongodb
-  await newCar.save();
   return newCar;
 };
 //update car

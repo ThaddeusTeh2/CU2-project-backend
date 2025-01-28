@@ -30,9 +30,11 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const name = req.body.name;
+
     const description = req.body.description;
+    const type = req.body.type;
     const brand = req.body.brand;
-    const like = 0;
+    const like = [];
     const image = req.body.image;
 
     // !err check

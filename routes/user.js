@@ -1,7 +1,60 @@
 const express = require("express");
 const router = express.Router();
 
-const { login, signup } = require("../controllers/user");
+const {
+  login,
+  signup,
+  getUsers,
+  getUserByEmail,
+  editUser,
+  deleteUser,
+} = require("../controllers/user");
+
+//get all users
+router.get("/users", async (req, res) => {
+  try {
+    const sortType = req.body;
+    const users = await getUsers(sortType);
+    res.status(200).send(users);
+  } catch (error) {
+    res.status(400).send({ error: error.message });
+  }
+});
+
+//get 1 user by email
+router.get("/users/:email", async (req, res) => {
+  try {
+    const { email } = req.params;
+    const user = await getUserByEmail(email);
+
+    res.status(200).send(user);
+  } catch (error) {
+    res.status(400).send({ error: error.message });
+  }
+});
+
+//update
+router.put("/users/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+    const updatedUser = await editUser(id, name);
+    res.status(200).send(updatedUser);
+  } catch (error) {
+    res.status(400).send({ error: error.message });
+  }
+});
+
+//delete
+router.delete("/users/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await deleteUser(id);
+    res.status(200).send({ message: "user deleted successfully" });
+  } catch (error) {
+    res.status(400).send({ error: error.message });
+  }
+});
 
 // login route
 router.post("/login", async (req, res) => {

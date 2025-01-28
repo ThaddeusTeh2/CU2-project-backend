@@ -33,7 +33,8 @@ router.post("/:carId", isValidUser, async (req, res) => {
 router.get("/:carId", async (req, res) => {
   try {
     const { carId } = req.params;
-    const comments = await getComments(carId);
+    const { sortType } = req.body;
+    const comments = await getComments(carId, sortType);
     res.status(200).send(comments);
   } catch (error) {
     console.log(error);
@@ -60,3 +61,5 @@ router.delete("/:commentID", isValidUser, async (req, res) => {
     res.status(200).send(deletedComment);
   } catch (error) {}
 });
+
+module.exports = router;
