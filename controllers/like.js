@@ -17,13 +17,13 @@ const deleteLike = async (id) => {
   return await Like.findByIdAndDelete(id);
 };
 
-const getLikes = async (id) => {
-  return await Like.find({ eId: id });
-};
+// const getLikes = async (id) => {
+//   return await Like.find({ eId: id });
+// };
 
 // export all the functions
 module.exports = {
   addNewLike,
   deleteLike,
-  getLikes,
+  // getLikes,
 };
