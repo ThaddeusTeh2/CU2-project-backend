@@ -2,6 +2,7 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 //make express app
 const app = express();
@@ -9,6 +10,8 @@ const app = express();
 //handle JSON rq
 app.use(express.json());
 
+//cors
+app.use(cors());
 //connect 2 db
 mongoose
   .connect(process.env.MONGODB_URL + "/review")

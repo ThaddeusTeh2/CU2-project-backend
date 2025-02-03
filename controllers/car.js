@@ -3,18 +3,12 @@ const { getLikes } = require("./like");
 
 //get all
 const getCars = async (type, brand, sortType) => {
-  const cars = Car.find({
-    type: type,
-    brand: brand,
-  }).sort({
-    [sortType]: 1,
-  });
+  const cars = await Car.find({ type, brand }).sort({ [sortType]: 1 });
 
   //helper func
   const processCars = async (cars) => {
     for (const car of cars) {
       const likes = await getLikes(car._id);
-
       car.likes = likes.length;
     }
     return cars;
@@ -25,18 +19,25 @@ const getCars = async (type, brand, sortType) => {
   return cars;
 };
 
+const getCarsAdmin = async (sortType) => {
+  const cars = await Car.find().sort({
+    [sortType]: 1,
+  });
+  return cars;
+};
+
 //get 1 by id
 const getCar = async (id) => {
-  const car = Car.findById(id);
+  const car = await Car.findById(id);
 
-  const processCar = async (car) => {
-    const likes = await getLikes(car._id);
-    car.likes = likes.length;
-    return car;
-  };
+  // const processCar = async (car) => {
+  //   const likes = await getLikes(car._id);
+  //   car.likes = likes.length;
+  //   return car;
+  // };
 
-  processCar(car);
-
+  // const updatedCar = await processCar(car);
+  // console.log(updatedCar);
   return car;
 };
 
@@ -54,7 +55,7 @@ const addNewCar = async (name, description, type, brand, like, image) => {
   return newCar;
 };
 //update car
-const updateCar = async (id, name, description, type, brand, like, image) => {
+const updateCar = async (id, name, description, type, brand, image) => {
   const updatedCar = await Car.findByIdAndUpdate(
     id,
     {
@@ -62,7 +63,6 @@ const updateCar = async (id, name, description, type, brand, like, image) => {
       description,
       type,
       brand,
-      like,
       image,
     },
     //stupid thing you need to get the latest data
@@ -83,4 +83,5 @@ module.exports = {
   deleteCar,
   getCars,
   getCar,
+  getCarsAdmin,
 };

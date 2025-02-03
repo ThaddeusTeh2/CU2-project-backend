@@ -83,13 +83,8 @@ router.put("/:id", async (req, res) => {
 // delete brand
 router.delete("/:id", async (req, res) => {
   try {
-    const id = req.params.id;
-    // validate ID format before querying database
-    if (!mongoose.Brands.ObjectId.isValid(id)) {
-      return res.status(400).send({
-        error: `ID format not valid bro: "${id}", valid MongoDB ObjectId required.`,
-      });
-    }
+    const { id } = req.params;
+
     const brand = await getBrand(id);
     // if brand does not exist
     if (!brand) {

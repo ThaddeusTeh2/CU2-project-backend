@@ -33,7 +33,7 @@ router.post("/:carId", isValidUser, async (req, res) => {
 router.get("/:carId", async (req, res) => {
   try {
     const { carId } = req.params;
-    const { sortType } = req.body;
+    const { sortType } = req.query;
     const comments = await getComments(carId, sortType);
     res.status(200).send(comments);
   } catch (error) {

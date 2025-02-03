@@ -4,6 +4,7 @@ const {
   addNewCar,
   updateCar,
   deleteCar,
+  getCarsAdmin,
 } = require("../controllers/car");
 
 const express = require("express");
@@ -14,8 +15,16 @@ const router = express.Router();
 
 //get all
 router.get("/", async (req, res) => {
-  const { type, brand, sortType } = req.body;
+  const { type, brand, sortType } = req.query;
+  console.log(req.query);
   const cars = await getCars(type, brand, sortType);
+  res.status(200).send(cars);
+});
+
+//get all for admin
+router.get("/admin", async (req, res) => {
+  const { sortType } = req.query;
+  const cars = await getCarsAdmin(sortType);
   res.status(200).send(cars);
 });
 
@@ -61,8 +70,8 @@ router.put("/:id", async (req, res) => {
     const id = req.params.id;
     const name = req.body.name;
     const description = req.body.description;
+    const type = req.body.type;
     const brand = req.body.brand;
-    const like = req.body.like;
     const image = req.body.image;
 
     const updatedCar = await updateCar(
@@ -71,7 +80,6 @@ router.put("/:id", async (req, res) => {
       description,
       type,
       brand,
-      like,
       image
     );
     res.status(200).send(updatedCar);

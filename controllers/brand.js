@@ -31,8 +31,8 @@ const updateBrand = async (_id, name) => {
   return updatedBrand;
 };
 
-const deleteBrand = async (_id) => {
-  const deletedBrand = await Brand.findByIdAndDelete(_id);
+const deleteBrand = async (id) => {
+  const deletedBrand = await Brand.findByIdAndDelete(id);
   return deletedBrand;
 };
 
