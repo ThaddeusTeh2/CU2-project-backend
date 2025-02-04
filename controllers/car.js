@@ -5,16 +5,11 @@ const { getLikes } = require("./like");
 const getCars = async (type, brand, sortType) => {
   const cars = await Car.find({ type, brand }).sort({ [sortType]: 1 });
 
-  //helper func
-  const processCars = async (cars) => {
-    for (const car of cars) {
-      const likes = await getLikes(car._id);
-      car.likes = likes.length;
-    }
-    return cars;
-  };
+  return cars;
+};
 
-  processCars(cars);
+const getCarsOverview = async () => {
+  const cars = await Car.find();
 
   return cars;
 };
@@ -84,4 +79,5 @@ module.exports = {
   getCars,
   getCar,
   getCarsAdmin,
+  getCarsOverview,
 };

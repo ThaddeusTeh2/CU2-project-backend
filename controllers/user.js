@@ -3,12 +3,18 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
+const Comment = require("../models/comment");
 
 //get all users
 const getUsers = async (sortType) => {
   const users = await User.find().sort({
     [sortType]: 1,
   });
+  return users;
+};
+
+const getUsersOverview = async (sortType) => {
+  const users = await User.find();
   return users;
 };
 
@@ -115,7 +121,14 @@ const editUser = async (_id, name) => {
 
 //delete user
 const deleteUser = async (id) => {
-  return await User.findByIdAndDelete(id);
+  const user = await User.findByIdAndDelete(id);
+
+  //delete all the comments belonging to that user
+
+  const comments = await Comment.deleteMany({
+    user: id,
+  });
+  return user;
 };
 
 module.exports = {
@@ -125,4 +138,5 @@ module.exports = {
   getUserByEmail,
   editUser,
   deleteUser,
+  getUsersOverview,
 };

@@ -6,11 +6,10 @@ const router = express.Router();
 
 router.post("/:id", isValidUser, async (req, res) => {
   try {
-    const { eId } = req.params;
-    const userId = req.user._id;
-    const { eType } = req.body;
+    const { id } = req.params;
+    const { eType, userId } = req.body;
 
-    const newLike = await addNewLike(userId, eId, eType);
+    const newLike = await addNewLike(userId, id, eType);
     res.status(200).send(newLike);
   } catch (error) {
     console.log(error);
@@ -20,20 +19,12 @@ router.post("/:id", isValidUser, async (req, res) => {
   }
 });
 
-router.delete("/:likeId", isValidUser, async (req, res) => {
+router.delete("/:id", isValidUser, async (req, res) => {
   try {
-    const { likeId } = req.params;
-    if (!likeId) {
-      return res.status(400).send({
-        error: "cant find like",
-      });
-    }
-    const deletedLike = await deleteLike(likeId);
-    if (!deletedLike) {
-      return res.status(500).send({
-        error: "failed to delete like",
-      });
-    }
+    const { id } = req.params;
+    const { eType, userId } = req.query;
+
+    const deletedLike = await deleteLike(id, eType, userId);
     res.status(200).send(deletedLike);
   } catch (error) {
     console.log(error);

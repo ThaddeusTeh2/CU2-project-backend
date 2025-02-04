@@ -1,9 +1,11 @@
 const express = require("express");
 const {
   addNewComment,
+  editComment,
   deleteComment,
   getComments,
   getAllComments,
+  getCommentById,
 } = require("../controllers/comment");
 const { isValidUser } = require("../middleware/auth");
 
@@ -34,7 +36,10 @@ router.post("/:carId", isValidUser, async (req, res) => {
 //get all comments
 router.get("/", async (req, res) => {
   try {
-    const comments = await getAllComments();
+    const { sortType } = req.query;
+    const comments = await getAllComments(sortType);
+
+    console.log(sortType);
 
     if (!comments.length) {
       return res.status(404).send({ error: "xde comments" });
@@ -62,15 +67,27 @@ router.get("/:carId", async (req, res) => {
   }
 });
 
+// edit
+router.put("/:commentId", isValidUser, async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const { content } = req.body;
+
+    const updatedComment = await editComment(commentId, content);
+    res.status(200).send(updatedComment);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      error: error,
+    });
+  }
+});
+
 router.delete("/:commentId", isValidUser, async (req, res) => {
   try {
     const { commentId } = req.params;
     const { userId, userRole } = req.body;
-    if (!commentId) {
-      return res.status(400).send({
-        error: "cant find comment",
-      });
-    }
+
     const deletedComment = await deleteComment(commentId, userId, userRole);
     if (!deletedComment) {
       return res.status(400).send({
@@ -78,7 +95,12 @@ router.delete("/:commentId", isValidUser, async (req, res) => {
       });
     }
     res.status(200).send(deletedComment);
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      error: error._message,
+    });
+  }
 });
 
 module.exports = router;

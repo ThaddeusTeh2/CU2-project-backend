@@ -13,6 +13,24 @@ const addNewComment = async (user, car, content) => {
   return newComment;
 };
 
+const getCommentById = async (commentId) => {
+  return await Comment.findById(commentId);
+};
+
+// update
+const editComment = async (commentId, content) => {
+  const comment = await Comment.findByIdAndUpdate(
+    commentId,
+    {
+      content: content,
+    },
+    //stupid thing you need to get the latest data
+    { new: true }
+  );
+
+  return comment;
+};
+
 // delete comment
 const deleteComment = async (id, userId, userRole) => {
   if (userRole === "admin") {
@@ -25,14 +43,15 @@ const deleteComment = async (id, userId, userRole) => {
   }
 };
 //get all comments
-const getAllComments = async () => {
-  const comments = await Comment.find().populate("user").populate("car");
+const getAllComments = async (sortType) => {
+  const comments = await Comment.find()
+    .sort({
+      [sortType]: 1,
+    })
+    .populate("user")
+    .populate("car");
 
-  // handle the comments' likes
-  for (const comment of comments) {
-    const likes = await getLikes(comment._id);
-    comment.likes = likes.length;
-  }
+  console.log(comments);
 
   return comments;
 };
@@ -46,29 +65,6 @@ const getComments = async (id, sortType) => {
     })
     .populate("user");
 
-  // helper function
-  const processComments = async (comments) => {
-    // loop through each of the comments
-
-    /*
-     comment of comments is shorthand for
-
-     for(let i = 0; i < comments.length; i++){
-     let comment = comments[i]
-    }
-    */
-
-    for (const comment of comments) {
-      // get all the likes for each comment
-      const likes = await getLikes(comment._id);
-      // set the comment.likes based on the model to the likes that we got
-      comment.likes = likes.length;
-    }
-    return comments;
-  };
-
-  processComments(comments);
-
   return comments;
 };
 
@@ -76,6 +72,8 @@ const getComments = async (id, sortType) => {
 module.exports = {
   addNewComment,
   deleteComment,
+  editComment,
   getComments,
   getAllComments,
+  getCommentById,
 };

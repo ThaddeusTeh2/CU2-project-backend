@@ -10,10 +10,12 @@ const {
   deleteUser,
 } = require("../controllers/user");
 
+const { isAdmin } = require("../middleware/auth");
+
 //get all users
 router.get("/users", async (req, res) => {
   try {
-    const sortType = req.body;
+    const { sortType } = req.query;
     const users = await getUsers(sortType);
     res.status(200).send(users);
   } catch (error) {
