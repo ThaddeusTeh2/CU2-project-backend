@@ -80,7 +80,7 @@ const signup = async (name, email, password) => {
   const newUser = new User({
     name,
     email,
-    password: bcrypt.hashSync(password, 69),
+    password: bcrypt.hashSync(password, 3),
   });
 
   // save user

@@ -7,6 +7,8 @@ const {
   getCarsAdmin,
 } = require("../controllers/car");
 
+const { isAdmin } = require("../middleware/auth");
+
 const express = require("express");
 //router
 const router = express.Router();
@@ -22,7 +24,7 @@ router.get("/", async (req, res) => {
 });
 
 //get all for admin
-router.get("/admin", async (req, res) => {
+router.get("/admin", isAdmin, async (req, res) => {
   const { sortType } = req.query;
   const cars = await getCarsAdmin(sortType);
   res.status(200).send(cars);
@@ -36,7 +38,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // add 1 car (POST)
-router.post("/", async (req, res) => {
+router.post("/", isAdmin, async (req, res) => {
   try {
     const name = req.body.name;
 
@@ -65,7 +67,7 @@ router.post("/", async (req, res) => {
 });
 
 // update car (PUT)
-router.put("/:id", async (req, res) => {
+router.put("/:id", isAdmin, async (req, res) => {
   try {
     const id = req.params.id;
     const name = req.body.name;
@@ -92,7 +94,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // delete car (DELETE)
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAdmin, async (req, res) => {
   try {
     const id = req.params.id;
     await deleteCar(id);

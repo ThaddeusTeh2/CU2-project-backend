@@ -11,6 +11,8 @@ const {
   deleteBrand,
 } = require("../controllers/brand");
 
+const { isAdmin } = require("../middleware/auth");
+
 // get all brands
 router.get("/", async (req, res) => {
   try {
@@ -45,7 +47,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // add new brand
-router.post("/", async (req, res) => {
+router.post("/", isAdmin, async (req, res) => {
   try {
     const name = req.body.name;
     if (!name) {
@@ -64,7 +66,7 @@ router.post("/", async (req, res) => {
 });
 
 // update brand
-router.put("/:id", async (req, res) => {
+router.put("/:id", isAdmin, async (req, res) => {
   try {
     // get id frm URL
     const id = req.params.id;
@@ -81,7 +83,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // delete brand
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAdmin, async (req, res) => {
   try {
     const { id } = req.params;
 

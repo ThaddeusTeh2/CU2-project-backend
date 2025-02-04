@@ -14,16 +14,37 @@ const addNewComment = async (user, car, content) => {
 };
 
 // delete comment
-const deleteComment = async (id) => {
-  return await Comment.findByIdAndDelete(id);
+const deleteComment = async (id, userId, userRole) => {
+  if (userRole === "admin") {
+    return await Comment.findByIdAndDelete(id);
+  } else {
+    const comment = await Comment.findById(id).populate("user");
+    if (comment.user._id === userId) {
+      return await Comment.findByIdAndDelete(id);
+    }
+  }
+};
+//get all comments
+const getAllComments = async () => {
+  const comments = await Comment.find().populate("user").populate("car");
+
+  // handle the comments' likes
+  for (const comment of comments) {
+    const likes = await getLikes(comment._id);
+    comment.likes = likes.length;
+  }
+
+  return comments;
 };
 
-//get comments
+//get comments (frm a specific car)
 const getComments = async (id, sortType) => {
   //get all comments from the certain carId
-  const comments = await Comment.find({ carId: id }).sort({
-    [sortType]: 1,
-  });
+  const comments = await Comment.find({ car: id })
+    .sort({
+      [sortType]: 1,
+    })
+    .populate("user");
 
   // helper function
   const processComments = async (comments) => {
@@ -56,4 +77,5 @@ module.exports = {
   addNewComment,
   deleteComment,
   getComments,
+  getAllComments,
 };

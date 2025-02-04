@@ -34,7 +34,7 @@ router.get("/users/:email", async (req, res) => {
 });
 
 //update
-router.put("/users/:id", async (req, res) => {
+router.put("/users/:id", isAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const { name } = req.body;
@@ -46,7 +46,7 @@ router.put("/users/:id", async (req, res) => {
 });
 
 //delete
-router.delete("/users/:id", async (req, res) => {
+router.delete("/users/:id", isAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     await deleteUser(id);
