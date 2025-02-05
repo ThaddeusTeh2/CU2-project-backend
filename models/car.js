@@ -25,6 +25,8 @@ const carSchema = new Schema(
   }
 );
 
+carSchema.index({ name: "text" });
+
 const Car = model("Car", carSchema);
 
 module.exports = Car;

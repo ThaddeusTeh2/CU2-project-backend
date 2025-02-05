@@ -1,10 +1,17 @@
 const Car = require("../models/car");
-const { getLikes } = require("./like");
 
 //get all
-const getCars = async (type, brand, sortType) => {
-  const cars = await Car.find({ type, brand }).sort({ [sortType]: 1 });
+const getCars = async (type, brand, sortType, search) => {
+  let query = {};
 
+  if (type) query.type = type;
+  if (brand) query.brand = brand;
+
+  if (search && search !== "all") {
+    query.$text = { $search: search };
+  }
+
+  let cars = await Car.find(query).sort({ [sortType]: 1 });
   return cars;
 };
 

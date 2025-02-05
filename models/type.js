@@ -8,5 +8,7 @@ const typeSchema = new Schema({
   },
 });
 
+typeSchema.index({ name: "text" });
+
 const Type = model("Type", typeSchema);
 module.exports = Type;

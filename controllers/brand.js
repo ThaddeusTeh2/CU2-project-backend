@@ -3,10 +3,14 @@ const Brand = require("../models/brand");
 //self explanatory CRUD operations
 
 //get all
-const getBrands = async (sortType) => {
-  const brands = await Brand.find().sort({
-    [sortType]: 1,
-  });
+const getBrands = async (sortType, search) => {
+  let query = {};
+
+  if (search && search !== "all") {
+    query.$text = { $search: search };
+  }
+
+  let brands = await Brand.find(query).sort({ [sortType]: 1 });
   return brands;
 };
 

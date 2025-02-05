@@ -16,9 +16,9 @@ const { isAdmin } = require("../middleware/auth");
 // get all types
 router.get("/", async (req, res) => {
   try {
-    const { sortType } = req.query;
-    const type = await getTypes(sortType);
-    res.status(200).json(type);
+    const { sortType, search } = req.query;
+    const type = await getTypes(sortType, search);
+    res.status(200).send(type);
   } catch (err) {
     res.status(400).send({ error: "error fetching type: " + err.message });
   }

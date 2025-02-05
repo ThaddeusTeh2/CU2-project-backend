@@ -16,9 +16,9 @@ const { isAdmin } = require("../middleware/auth");
 // get all brands
 router.get("/", async (req, res) => {
   try {
-    const { sortType } = req.query;
-    const brand = await getBrands(sortType);
-    res.status(200).json(brand);
+    const { sortType, search } = req.query;
+    const brand = await getBrands(sortType, search);
+    res.status(200).send(brand);
   } catch (err) {
     res.status(400).send({ error: "err fetching brand: " + err.message });
   }

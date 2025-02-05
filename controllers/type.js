@@ -3,10 +3,14 @@ const Type = require("../models/type");
 //self explanatory CRUD operations
 // (findbyID supremacy :D )
 
-const getTypes = async (sortType) => {
-  const types = await Type.find().sort({
-    [sortType]: 1,
-  });
+const getTypes = async (sortType, search) => {
+  let query = {};
+
+  if (search && search !== "all") {
+    query.$text = { $search: search };
+  }
+
+  let types = await Type.find(query).sort({ [sortType]: 1 });
   return types;
 };
 

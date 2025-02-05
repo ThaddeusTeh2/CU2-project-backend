@@ -7,7 +7,7 @@ const {
   getCarsAdmin,
 } = require("../controllers/car");
 
-const { isAdmin, isValidUser } = require("../middleware/auth");
+const { isAdmin } = require("../middleware/auth");
 
 const express = require("express");
 //router
@@ -17,9 +17,9 @@ const router = express.Router();
 
 //get all
 router.get("/", async (req, res) => {
-  const { type, brand, sortType } = req.query;
+  const { type, brand, sortType, search } = req.query;
   console.log(req.query);
-  const cars = await getCars(type, brand, sortType);
+  const cars = await getCars(type, brand, sortType, search);
   res.status(200).send(cars);
 });
 
