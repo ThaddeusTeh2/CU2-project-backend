@@ -12,6 +12,9 @@ app.use(express.json());
 
 //cors
 app.use(cors());
+
+app.use("/api/uploads", express.static("uploads"));
+
 //connect 2 db
 mongoose
   .connect(process.env.MONGODB_URL + "/review")
@@ -41,6 +44,7 @@ app.use("/api/brand", brandRouter);
 app.use("/api/comment", commentRouter);
 app.use("/api/like", likeRouter);
 app.use("/api/review", reviewRouter);
+app.use("/api/image", require("./routes/image"));
 
 app.use("/api/auth", require("./routes/user"));
 
