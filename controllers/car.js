@@ -4,8 +4,8 @@ const Car = require("../models/car");
 const getCars = async (type, brand, sortType, search) => {
   let query = {};
 
-  if (type) query.type = type;
-  if (brand) query.brand = brand;
+  if (type && type !== "all") query.type = type;
+  if (brand && brand !== "all") query.brand = brand;
 
   if (search && search !== "all") {
     query.$text = { $search: search };
